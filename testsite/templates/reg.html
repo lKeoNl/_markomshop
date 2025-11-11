@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Интернет-магазин Markom</title>
+
+  <link rel="icon" href="{{ url_for('static', filename='images/markom.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='reg.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='notifications.css') }}">
+
+</head>
+<body>
+  <div class="register-container">
+        <form id="register-form" class="register-box">
+            <h2>Регистрация</h2>
+
+            <input type="text" name="name" placeholder="Имя" >
+            <div class="error" id="name-error"></div>
+
+            <input type="text" name="email" placeholder="Электронная почта" >
+            <div class="error" id="email-error"></div>
+
+            <input type="text" name="login" placeholder="Логин" >
+            <div class="error" id="login-error"></div>
+
+            <input type="password" name="password" placeholder="Пароль" >
+            <div class="error" id="password-error"></div>
+
+            <input type="password" name="confirm_password" placeholder="Подтвердите пароль" >
+            <div class="error" id="confirm_password-error"></div>
+
+            <button type="submit" class="register-btn">Зарегистрироваться</button>
+
+            <div id="notification"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    document.querySelectorAll('.error').forEach(el => {
+        el.textContent = '';
+        el.classList.remove('show');
+    });
+
+    const notification = document.getElementById('notification');
+    notification.textContent = '';
+
+    const formData = {
+        name: e.target.name.value.trim(),
+        email: e.target.email.value.trim(),
+        login: e.target.login.value.trim(),
+        password: e.target.password.value,
+        confirm_password: e.target.confirm_password.value
+    };
+
+    try {
+        const response = await fetch('/reg', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            for (const [field, error] of Object.entries(data.errors)) {
+                const errorElement = document.getElementById(`${field}-error`);
+                if (errorElement) {
+                    errorElement.textContent = error;
+                    errorElement.classList.add('show');
+                }
+            }
+            return;
+        }
+
+        if (data.success) {
+            showNotification(data.message);
+            if (data.redirect) {
+                setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 2000);
+            }
+        }
+
+    } catch (error) {
+        console.error('Ошибка:', error);
+        const notification = document.getElementById('confirm_password-error');
+        notification.textContent = 'Ошибка соединения с сервером';
+        notification.classList.add('show');
+    }
+});
+    </script>
+
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+
+<div id="global-notification" class="notification" style="display: none;"></div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<div class="catalog-modal" id="catalog-menu" style="display: none;">
+
+  <div class="catalog-item">
+    <a href="{{ url_for('vegetables') }}">
+      <img src="{{ url_for('static', filename='images/авокадо.jpg') }}" alt="Фрукты и овощи">
+      <h4 class="catalog-title">Овощи, фрукты, ягоды</h4>
+    </a>
+    <ul>
+      <li><a href="{{ url_for('vegetables') }}#fruits">Фрукты и ягоды</a></li>
+      <li><a href="{{ url_for('vegetables') }}#vegetables">Овощи</a></li>
+      <li><a href="{{ url_for('vegetables') }}#greenery">Зелень</a></li>
+    </ul>
+  </div>
+
+  <div class="catalog-item">
+    <a href="{{ url_for('meat') }}">
+      <img src="{{ url_for('static', filename='images/филе_куриное.jpg') }}" alt="Мясо">
+      <h4 class="catalog-title">Птица, мясо</h4>
+    </a>
+    <ul>
+      <li><a href="{{ url_for('meat') }}#poultry">Птица</a></li>
+      <li><a href="{{ url_for('meat') }}#beef">Говядина</a></li>
+      <li><a href="{{ url_for('meat') }}#pork">Свинина</a></li>
+    </ul>
+  </div>
+
+  <div class="catalog-item">
+    <a href="{{ url_for('drinks') }}">
+      <img src="{{ url_for('static', filename='images/сок_апельсин.jpg') }}" alt="Соки">
+      <h4 class="catalog-title">Вода, соки</h4>
+    </a>
+  </div>
+
+  <div class="catalog-item">
+    <a href="{{ url_for('nuts') }}">
+      <img src="{{ url_for('static', filename='images/фундук_очищенный.jpg') }}" alt="Орехи">
+      <h4 class="catalog-title">Орехи</h4>
+    </a>
+  </div>
+
+</div>

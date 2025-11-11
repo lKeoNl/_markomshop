@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Интернет-магазин Markom</title>
+
+  <link rel="icon" href="{{ url_for('static', filename='images/markom.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='store.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='notifications.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
+
+
+</head>
+
+<body>
+  {% include 'components/header.html' %}
+
+  {% include 'components/catalog-modal.html' %}
+
+  <main class="cart-items">
+  {% if items %}
+    <div class="cart-grid">
+      {% for item in items %}
+        <div class="cart-card" data-product-id="{{ item.product_id }}">
+          <img src="{{ url_for('static', filename='images/' + (item.product_name | lower | replace(' ', '_') + '.jpg')) }}"
+     alt="{{ item.product_name }}">
+          <div class="product-name">{{ item.product_name|capitalize }}</div>
+          <div class="quantity-controls">
+            <button class="decrease-btn">−</button>
+            <span class="quantity">{{ item.quantity }}</span>
+            <button class="increase-btn">+</button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Ваша корзина пуста.</p>
+  {% endif %}
+</main>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.cart-card').forEach(card => {
+    const productId = card.dataset.productId;
+    const quantitySpan = card.querySelector('.quantity');
+
+    const increaseBtn = card.querySelector('.increase-btn');
+    const decreaseBtn = card.querySelector('.decrease-btn');
+
+    if (!productId || !quantitySpan || !increaseBtn || !decreaseBtn) {
+      console.warn('Элемент управления не найден в карточке:', card);
+      return;
+    }
+
+    increaseBtn.addEventListener('click', async () => {
+      try {
+        const response = await fetch(`/cart/increase/${productId}`, { method: 'POST' });
+        if (response.ok) {
+          const data = await response.json();
+          quantitySpan.textContent = data.new_quantity;
+        }
+      } catch (err) {
+        console.error('Ошибка увеличения количества:', err);
+      }
+    });
+
+    decreaseBtn.addEventListener('click', async () => {
+      try {
+        const response = await fetch(`/cart/decrease/${productId}`, { method: 'POST' });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.new_quantity > 0) {
+            quantitySpan.textContent = data.new_quantity;
+          } else {
+            card.remove();
+          }
+        }
+      } catch (err) {
+        console.error('Ошибка уменьшения количества:', err);
+      }
+    });
+  });
+});
+</script>
+
+
+
+<script src="{{ url_for('static', filename='js/store.js') }}"></script>
+
+</body>
+</html>

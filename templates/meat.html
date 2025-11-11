@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Интернет-магазин Markom</title>
+
+  <link rel="icon" href="{{ url_for('static', filename='images/markom.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='store.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='notifications.css') }}">
+
+</head>
+<body>
+  {% include 'components/header.html' %}
+
+{% include 'components/catalog-modal.html' %}
+
+
+
+
+  <main class="products">
+
+  <h2 id="poultry" class="page_subtitle">Птица</h2>
+  <div class="product-grid">
+    {% for poultry in poultry %}
+    <div class="product">
+      <img src="{{ poultry.image_url }}" alt="{{ poultry.name }}">
+      <p>{{ poultry.name|capitalize }}, 1 кг</p>
+      <button onclick="openModal('{{ poultry.id }}', '{{ poultry.name|capitalize }}', this)">
+        Купить <i class="fa-solid fa-cart-shopping"></i>
+      </button>
+
+    </div>
+    {% endfor %}
+  </div>
+
+
+    <h2 id="beef" class="page_subtitle">Говядина</h2>
+  <div class="product-grid">
+    {% for beef in beef %}
+    <div class="product">
+      <img src="{{ beef.image_url }}" alt="{{ beef.name }}">
+      <p>{{ beef.name|capitalize }}, 1 кг</p>
+      <button onclick="openModal('{{ beef.id }}', '{{ beef.name|capitalize }}', this)">
+        Купить <i class="fa-solid fa-cart-shopping"></i>
+      </button>
+
+    </div>
+    {% endfor %}
+  </div>
+
+
+<h2 id="pork" class="page_subtitle">Свинина</h2>
+  <div class="product-grid">
+    {% for pork in pork %}
+    <div class="product">
+      <img src="{{ pork.image_url }}" alt="{{ pork.name }}">
+      <p>{{ pork.name|capitalize }}, 1 кг</p>
+      <button onclick="openModal('{{ pork.id }}', '{{ pork.name|capitalize }}', this)">
+        Купить <i class="fa-solid fa-cart-shopping"></i>
+      </button>
+
+    </div>
+    {% endfor %}
+  </div>
+
+</main>
+
+
+
+
+
+
+
+
+
+  {% include 'components/buy-modal.html' %}
+
+
+
+
+{% include 'components/footer.html' %}
+
+  <!-- ПРОЛИСТЫВАНИЕ СТРАНИЦЫ -->
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+    const scrollToForm = "{{ scroll_to_form|default(False) }}";
+    if (scrollToForm === "True") {
+      const formSection = document.getElementById("feedback-form");
+      if (formSection) {
+        formSection.scrollIntoView({ behavior: "auto" });
+      }
+    }
+  });
+</script>
+<script src="{{ url_for('static', filename='js/store.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+
+<div id="global-notification" class="notification" style="display: none;"></div>
+
+</body>
+
+{% if session.get('notification') %}
+<div class="notification">
+  {{ session.pop('notification') }}
+</div>
+<script>
+  showNotification();
+</script>
+{% endif %}
+
+</html>

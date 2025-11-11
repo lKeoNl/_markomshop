@@ -1,0 +1,55 @@
+<header class="site-header">
+
+  <div class="header-left">
+    <a href="{{ url_for('store') }}">
+      <img src="{{ url_for('static', filename='images/markom_logo.svg') }}" alt="Логотип" class="logo">
+    </a>
+
+    <a href="#" class="catalog-button" id="catalog-toggle">
+      <i class="fas fa-bars" id="catalog-icon"></i>
+      <span class="catalog-text">Каталог</span>
+    </a>
+
+    <div class="search">
+  <form method="GET" action="{{ url_for('search') }}" class="search-form">
+    <input type="text" name="q" placeholder="Поиск..." class="search-input">
+    <button type="submit" class="search-button" aria-label="Поиск">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </form>
+</div>
+
+
+
+
+  </div>
+
+  <div class="header-right">
+
+    <a href="{{ url_for('cart') }}" class="cart-icon" title="Корзина">
+      <div class="cart-icon-btn">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+    </a>
+
+     {% if session.get('user_id') %}
+    <form action="{{ url_for('logout') }}" method="post" class="logout-icon">
+      <button type="submit" class="logout-icon-btn" title="Выйти">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </form>
+  {% else %}
+    <a href="{{ url_for('login') }}" class="login-icon" title="Войти">
+  <div class="login-icon-btn">
+    <i class="fas fa-user"></i>
+  </div>
+  <div class="login-icon-text">
+    <span>Войти</span>
+  </div>
+</a>
+
+  {% endif %}
+
+  </div>
+
+  </header>

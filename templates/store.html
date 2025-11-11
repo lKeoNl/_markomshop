@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Интернет-магазин Markom</title>
+
+  <link rel="icon" href="{{ url_for('static', filename='images/markom.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='store.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='notifications.css') }}">
+
+
+</head>
+
+
+<body>
+  {% include 'components/header.html' %}
+
+  {% include 'components/catalog-modal.html' %}
+
+  <div class="header-banner">
+    <img src="{{ url_for('static', filename='images/banner_header.webp') }}" alt="Баннер">
+    <div class="overlay"></div>
+    <div class="header-banner-text">
+      Премиум продукты высокого качества
+    </div>
+  </div>
+
+
+
+  <main class="products">
+
+<div class="slider-wrapper">
+  <div class="slider-header">
+    <h2>Новое поступление</h2>
+    <div class="slider-controls">
+      <button class="slider-btn left" onclick="scrollSlider(-1)">&#8592;</button>
+      <button class="slider-btn right" onclick="scrollSlider(1)">&#8594;</button>
+    </div>
+  </div>
+  <div class="product-slider" id="productSlider">
+    <div class="product-grid-slider">
+      {% for product in new_products %}
+      <div class="new_product">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        <p>{{ product.name|capitalize }}, 1 кг</p>
+        <button onclick="openModal('{{ product.id }}', '{{ product.name|capitalize }}', this)">
+          Купить <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+<div class="banner-section">
+  <div class="banner-row top-row">
+    <a href="{{ url_for('vegetables') }}" class="banner" style="background-image: url('static/images/banner_vegetables.jpg');">
+      <div class="banner-label">Овощи</div>
+    </a>
+    <a href="vegetables.html" class="banner" style="background-image: url('static/images/banner_berries.jpg');">
+      <div class="banner-label">Ягоды</div>
+    </a>
+  </div>
+  <div class="banner-row bottom-row">
+    <a href="meat.html" class="banner" style="background-image: url('static/images/banner_meat.jpg');">
+      <div class="banner-label">Мясные изделия</div>
+    </a>
+    <a href="drinks.html" class="banner" style="background-image: url('static/images/banner_drinks.jpg');">
+      <div class="banner-label">Вода, соки, напитки</div>
+    </a>
+    <a href="nuts.html" class="banner" style="background-image: url('static/images/banner_nuts.jpeg');">
+      <div class="banner-label">Орехи</div>
+    </a>
+  </div>
+</div>
+
+
+<div class="slider-wrapper">
+  <div class="slider-header">
+    <h2>Вода, соки, напитки</h2>
+  </div>
+  <div class="product-slider">
+    <div class="product-grid-slider">
+      {% for product in new_drinks %}
+      <div class="new_product">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        <p>{{ product.name|capitalize }}, 1 л</p>
+        <button onclick="openModal('{{ product.id }}', '{{ product.name|capitalize }}', this)">
+          Купить <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+    <div class="slider-wrapper">
+  <div class="slider-header">
+    <h2>Орехи</h2>
+  </div>
+  <div class="product-slider">
+    <div class="product-grid-slider">
+      {% for product in new_nuts %}
+      <div class="new_product">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        <p>{{ product.name|capitalize }}, 1 л</p>
+        <button onclick="openModal('{{ product.id }}', '{{ product.name|capitalize }}', this)">
+          Купить <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product">
+      <img src="{{ product.image_url }}" alt="{{ product.name }}">
+      <p>{{ product.name|capitalize }}</p>
+      <button onclick="openModal('{{ product.id }}', '{{ product.name|capitalize }}', this)">
+        Купить
+      </button>
+
+    </div>
+    {% endfor %}
+  </div>
+</main>
+
+
+{% include 'components/buy-modal.html' %}
+
+{% include 'components/footer.html' %}
+
+
+
+  <!-- ПРОЛИСТЫВАНИЕ СТРАНИЦЫ -->
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+    const scrollToForm = "{{ scroll_to_form|default(False) }}";
+    if (scrollToForm === "True") {
+      const formSection = document.getElementById("feedback-form");
+      if (formSection) {
+        formSection.scrollIntoView({ behavior: "auto" });
+      }
+    }
+  });
+</script>
+
+<script src="{{ url_for('static', filename='js/store.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+
+<div id="global-notification" class="notification" style="display: none;"></div>
+
+</body>
+
+{% if session.get('notification') %}
+<div class="notification">
+  {{ session.pop('notification') }}
+</div>
+<script>showNotification();</script>
+{% endif %}
+
+
+</html>

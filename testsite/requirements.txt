@@ -1,0 +1,6 @@
+Flask
+gunicorn
+werkzeug
+psycopg2>=2.9.9
+python-dotenv
+requests==2.31.0
