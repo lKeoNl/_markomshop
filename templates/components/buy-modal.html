@@ -1,0 +1,13 @@
+<div id="modal" class="modal relative-modal">
+  <div class="modal-content">
+    <h2 id="modal-title">Введите кол-во товара</h2>
+    <form id="cart-form">
+      <input type="number" name="quantity" min="1" value="1" placeholder="Количество" required>
+      <input type="hidden" name="product_id" id="modal-product-id">
+      <div class="modal-buttons">
+        <button type="submit" class="add-button">Добавить</button>
+        <button type="button" class="cancel-button" onclick="closeModal()">Отмена</button>
+      </div>
+    </form>
+  </div>
+</div>

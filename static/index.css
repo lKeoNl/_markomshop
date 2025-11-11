@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+}
+
+.login-container {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background-color: #eaf6ea;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 320px;
+}
+
+.login-box h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #2c7b2c;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #2c7b2c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #256b25;
+}
+
+.register-btn {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: -10px;
+    padding: 10px;
+    background-color: #419941;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.register-btn:hover {
+    background-color: #2c7b2c;
+}
+
+.error {
+    color: #ff0000;
+    font-family: Arial, sans-serif;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    text-shadow: 0 0 1px rgba(255,255,255,0.3);
+    text-align: center;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    margin-top: 0;
+}
+
+.error.show {
+    height: 18px;
+    margin-top: 0px;
+}
+
+.error::before {
+    font-family: "Font Awesome 6 Free";
+    content: "\f06a";
+    font-size: 0.9em;
+    margin-right: 3px;
+}

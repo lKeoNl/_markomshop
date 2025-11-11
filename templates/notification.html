@@ -1,0 +1,8 @@
+{% if session.get('notification') %}
+<div class="notification">
+  {{ session.pop('notification') }}
+</div>
+<script>
+  showNotification();
+</script>
+{% endif %}
